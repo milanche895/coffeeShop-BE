@@ -3,6 +3,6 @@ COPY . .
 RUN mvn clean package -DskipTests
 
 FROM openjdk:17.0.1-jdk-slim
-COPY --from=build /target/demo-0.0.1-SNAPSHOT.jar brka-media.jar
+COPY --from=build /target/brka-media-0.0.1-SNAPSHOT.jar brka-media.jar
 EXPOSE 8080
 ENTRYPOINT ["java","-jar","brka-media.jar"]
