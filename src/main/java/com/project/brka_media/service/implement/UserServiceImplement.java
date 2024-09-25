@@ -38,7 +38,7 @@ public class UserServiceImplement implements UserService {
     }
     @Override
     @Transactional
-    public UserDTO updateUser(UserDTO userDTO, Long id) {
+    public UserDTO updateUser(UserDTO userDTO, String id) {
 
         if(Objects.nonNull(id) && Objects.nonNull(userDTO)) {
 
@@ -59,9 +59,10 @@ public class UserServiceImplement implements UserService {
     }
 
     @Override
-    public UserDTO getUserById(Long id) {
+    public UserDTO getUserById(String id) {
 
         UserEntity userEntity =  userRepository.findOneById(id);
+        System.out.println(userEntity);
         System.out.println(userEntity.getId());
         if (Objects.isNull(userEntity)){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found!");
@@ -76,7 +77,7 @@ public class UserServiceImplement implements UserService {
     @Override
     public UserDTO getUserByUsername(String username) {
 
-        UserEntity userEntity =  userRepository.findByEmail(username);
+        UserEntity userEntity =  userRepository.findByUsername(username);
         if (Objects.isNull(userEntity)){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found!");
         } else {

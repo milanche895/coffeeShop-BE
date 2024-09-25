@@ -11,9 +11,9 @@ public interface UserService {
     List<UserDTO> getAllUser();
 
     @Transactional
-    UserDTO updateUser(UserDTO userDTO, Long id);
+    UserDTO updateUser(UserDTO userDTO, String id);
 
-    UserDTO getUserById(Long id);
+    UserDTO getUserById(String id);
 
     UserDTO getUserByUsername(String username);
 }

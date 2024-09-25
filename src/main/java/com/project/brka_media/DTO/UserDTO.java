@@ -11,7 +11,7 @@ public class UserDTO {
 
     private String id;
     private String name;
-    private String email;
+    private String username;
     private String password;
     private String role;
 
@@ -22,7 +22,7 @@ public class UserDTO {
     public UserDTO(UserEntity userEntity) {
         this.id = userEntity.getId();
         this.name = userEntity.getName();
-        this.email = userEntity.getEmail();
+        this.username = userEntity.getUsername();
         this.password = userEntity.getPassword();
         this.role = userEntity.getRole();
 
@@ -44,12 +44,12 @@ public class UserDTO {
         this.name = name;
     }
 
-    public String getEmail() {
-        return email;
+    public String getUsername() {
+        return username;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {

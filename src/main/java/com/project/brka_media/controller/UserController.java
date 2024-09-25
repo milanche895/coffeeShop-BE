@@ -21,6 +21,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLOutput;
 import java.util.List;
 
 @Api(tags="User")
@@ -49,7 +50,7 @@ public class UserController {
             throws Exception {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                    userEntity.getEmail(), userEntity.getPassword()));
+                    userEntity.getUsername(), userEntity.getPassword()));
         } catch (DisabledException e) {
             throw new Exception("USER_DISABLED", e);
         }
@@ -57,24 +58,30 @@ public class UserController {
             throw new Exception("INVALID_CREDENTIALS", e);
         }
 
-        UserDetails userdetails = userDetailsService.loadUserByUsername(userEntity.getEmail());
-        UserEntity userFromDB = userRepository.findByEmail(userEntity.getEmail());
+        UserDetails userdetails = userDetailsService.loadUserByUsername(userEntity.getUsername());
+        System.out.println(userdetails);
+        UserEntity userFromDB = userRepository.findByUsername(userEntity.getUsername());
+        System.out.println(userFromDB);
         String token = "Bearer " + jwtUtil.generateToken(userdetails, userFromDB);
-
+        System.out.println(token);
         return ResponseEntity.ok(new AuthenticationResponse(token, userdetails.getAuthorities()));
+    }
+    @PostMapping(WebConstants.PUBLIC_BASE_URL + "/registration")
+    public ResponseEntity<?> registration(@RequestBody UserDTO userDTO) throws Exception {
+        return ResponseEntity.ok(userDetailsService.save(userDTO));
     }
     @GetMapping(WebConstants.PUBLIC_BASE_URL + "/user")
     public ResponseEntity<List<UserDTO>> getAllUser(){
         return new ResponseEntity<List<UserDTO>>(userService.getAllUser(), HttpStatus.OK);
     }
     @PutMapping(WebConstants.BASE_CLIENT_URL + "/user/{id}")
-    public ResponseEntity<UserDTO> updateUser( @PathVariable("id") Long id,@RequestBody UserDTO userDTO) {
+    public ResponseEntity<UserDTO> updateUser( @PathVariable("id") String id,@RequestBody UserDTO userDTO) {
 
         return new ResponseEntity<UserDTO>(userService.updateUser(userDTO, id),HttpStatus.OK);
     }
-    @GetMapping(WebConstants.BASE_CLIENT_URL + "/user/{id}")
-    public ResponseEntity<UserDTO> getUserById(@PathVariable(name = "id") Long id) {
-
+    @GetMapping(WebConstants.PUBLIC_BASE_URL + "/user/{id}")
+    public ResponseEntity<UserDTO> getUserById(@PathVariable(name = "id") String id) {
+        System.out.println(id);
         return new ResponseEntity<UserDTO>(userService.getUserById(id), HttpStatus.OK);
     }
     @GetMapping(WebConstants.BASE_ADMIN_URL + "/user/client")

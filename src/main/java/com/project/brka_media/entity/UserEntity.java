@@ -4,20 +4,22 @@ import com.project.brka_media.DTO.UserDTO;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.sql.Timestamp;
-import java.util.Date;
-
 @Document(collection = "users")
 public class UserEntity {
+
     @Id
     private String id;
     private String name;
-    private String email;
+    private String username;
     private String password;
     private String role;
 
+    public UserEntity() {
+    }
+
     public UserEntity(UserDTO userDTO) {
-        this.email = userDTO.getEmail();
+        this.id = userDTO.getId();
+        this.username = userDTO.getUsername();
         this.name = userDTO.getName();
         this.password = userDTO.getPassword();
         this.role = userDTO.getRole();
@@ -39,12 +41,12 @@ public class UserEntity {
         this.name = name;
     }
 
-    public String getEmail() {
-        return email;
+    public String getUsername() {
+        return username;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
